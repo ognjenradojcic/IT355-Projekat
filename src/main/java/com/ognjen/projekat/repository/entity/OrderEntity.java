@@ -1,22 +1,31 @@
 package com.ognjen.projekat.repository.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 
 
 @Entity
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "order")
 public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "order_id")
-    private Integer orderId;
+    private Integer id;
 
+    @Column(name = "quantity")
     private Integer quantity;
 
+    @Column(name = "address")
     private String address;
 
+    @Column(name = "ordered_date")
     private LocalDate orderedDate;
 
     @ManyToOne(optional = false)
@@ -28,54 +37,4 @@ public class OrderEntity {
     private CustomerEntity customerEntity;
 
 
-    public OrderEntity() {
-    }
-
-    public Integer getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public LocalDate getOrderedDate() {
-        return orderedDate;
-    }
-
-    public void setOrderedDate(LocalDate orderedDate) {
-        this.orderedDate = orderedDate;
-    }
-
-    public ProductEntity getProduct() {
-        return productEntity;
-    }
-
-    public void setProduct(ProductEntity productEntity) {
-        this.productEntity = productEntity;
-    }
-
-    public CustomerEntity getCustomer() {
-        return customerEntity;
-    }
-
-    public void setCustomer(CustomerEntity customerEntity) {
-        this.customerEntity = customerEntity;
-    }
 }

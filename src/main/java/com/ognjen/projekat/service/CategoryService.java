@@ -2,11 +2,9 @@ package com.ognjen.projekat.service;
 
 import com.ognjen.projekat.mapper.CategoryMapper;
 import com.ognjen.projekat.model.Category;
-import com.ognjen.projekat.repository.entity.CategoryEntity;
 import com.ognjen.projekat.repository.CategoryRepository;
-
+import com.ognjen.projekat.repository.entity.CategoryEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,12 +20,12 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
 
-    public List<CategoryEntity> getAll() {
-        return categoryRepository.findAll();
+    public List<Category> getAll() {
+        return mapper.toDomainList(categoryRepository.findAll());
     }
 
     public Category getById(Integer categoryId) {
-        return mapper.toDomain(getCategoryById(categoryId));
+        return mapper.toDomain(getCategoryEntityById(categoryId));
     }
 
     @Transactional
@@ -35,25 +33,23 @@ public class CategoryService {
 
         var categoryEntity = mapper.toEntity(category);
 
-        var saved = categoryRepository.save(categoryEntity);
-
-        return mapper.toDomain(saved);
+        return mapper.toDomain(categoryRepository.save(categoryEntity));
     }
 
     @Transactional
-    public void update(CategoryEntity updatedCategoryEntity) {
+    public void update(Category updatedCategory) {
 
-        var existingCategory = getById(updatedCategoryEntity.getId());
+        var existingCategoryEntity = getCategoryEntityById(updatedCategory.getId());
 
-        existingCategory.setName(updatedCategoryEntity.getName());
+        mapper.update(existingCategoryEntity, updatedCategory);
     }
 
     @Transactional
     public void delete(Integer categoryId) {
-        categoryRepository.delete(getCategoryById(categoryId));
+        categoryRepository.delete(getCategoryEntityById(categoryId));
     }
 
-    private CategoryEntity getCategoryById(Integer categoryId) {
+    private CategoryEntity getCategoryEntityById(Integer categoryId) {
         return categoryRepository.findById(categoryId).orElseThrow(() ->
                 new RuntimeException("Category not found with id " + categoryId));
     }
