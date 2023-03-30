@@ -10,6 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface CategoryMapper {
+
     CategoryEntity toEntity(Category category);
 
     Category toDomain(CategoryEntity categoryEntity);

@@ -34,7 +34,7 @@ public class OrderEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "customer_id")
-    private CustomerEntity customerEntity;
+    private UserEntity userEntity;
 
 
 }

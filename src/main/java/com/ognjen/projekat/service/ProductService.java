@@ -15,6 +15,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProductService {
+
     private ProductMapper mapper;
     private ProductRepository productRepository;
 

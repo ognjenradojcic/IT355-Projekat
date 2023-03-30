@@ -1,5 +1,6 @@
 package com.ognjen.projekat.service;
 
+import com.ognjen.projekat.exception.NotFoundException;
 import com.ognjen.projekat.mapper.CategoryMapper;
 import com.ognjen.projekat.model.Category;
 import com.ognjen.projekat.repository.CategoryRepository;
@@ -18,7 +19,6 @@ public class CategoryService {
 
     private final CategoryMapper mapper;
     private final CategoryRepository categoryRepository;
-
 
     public List<Category> getAll() {
         return mapper.toDomainList(categoryRepository.findAll());
@@ -51,6 +51,6 @@ public class CategoryService {
 
     private CategoryEntity getCategoryEntityById(Integer categoryId) {
         return categoryRepository.findById(categoryId).orElseThrow(() ->
-                new RuntimeException("Category not found with id " + categoryId));
+                new NotFoundException("Category not found with id " + categoryId));
     }
 }
