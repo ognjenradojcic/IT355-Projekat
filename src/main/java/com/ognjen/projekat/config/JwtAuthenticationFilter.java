@@ -1,5 +1,6 @@
 package com.ognjen.projekat.config;
 
+import com.ognjen.projekat.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
+    private final TokenService tokenService;
     private final UserDetailsService userDetailsService;
 
     @Override
@@ -35,13 +36,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         jwtToken = authHeader.substring(7);
-        username = jwtService.extractUsername(jwtToken);
+        username = tokenService.extractUsername(jwtToken);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-            if (jwtService.isTokenValid(jwtToken, userDetails)) {
+            if (tokenService.isTokenValid(jwtToken, userDetails)) {
 
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
                         null,

@@ -17,15 +17,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
 
-    private UserRepository userRepository;
-    private UserMapper mapper;
+    private final UserRepository userRepository;
+    private final UserMapper mapper;
 
     public List<User> getAll() {
         return mapper.toDomainList(userRepository.findAll());
     }
 
     public User getById(Integer customerId) {
-        return mapper.toDomain(getCustomerEntityById(customerId));
+        return mapper.toDomain(getUserEntityById(customerId));
+    }
+
+    public User getByUsername(String username) {
+        return mapper.toDomain(userRepository.findByUsername(username)
+                .orElseThrow(() ->
+                        new NotFoundException("User not found for username: " + username)
+                ));
     }
 
     @Transactional
@@ -38,18 +45,18 @@ public class UserService {
 
     @Transactional
     public void delete(Integer customerId) {
-        userRepository.delete(getCustomerEntityById(customerId));
+        userRepository.delete(getUserEntityById(customerId));
     }
 
     @Transactional
     public void update(User updatedUser) {
 
-        var existingCustomerEntity = getCustomerEntityById(updatedUser.getId());
+        var existingUserEntity = getUserEntityById(updatedUser.getId());
 
-        mapper.update(existingCustomerEntity, updatedUser);
+        mapper.update(existingUserEntity, updatedUser);
     }
 
-    private UserEntity getCustomerEntityById(Integer customerId) {
+    private UserEntity getUserEntityById(Integer customerId) {
         return userRepository.findById(customerId).orElseThrow(() ->
                 new NotFoundException("User not found with id: " + customerId));
     }

@@ -16,8 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderService {
 
-    private OrderMapper mapper;
-    private OrderRepository orderRepository;
+    private final OrderMapper mapper;
+    private final OrderRepository orderRepository;
 
     public List<Order> getAll() {
         return mapper.toDomainList(orderRepository.findAll());

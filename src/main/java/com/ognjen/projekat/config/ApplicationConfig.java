@@ -1,7 +1,6 @@
 package com.ognjen.projekat.config;
 
-import com.ognjen.projekat.exception.NotFoundException;
-import com.ognjen.projekat.repository.UserRepository;
+import com.ognjen.projekat.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,13 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserRepository repository;
+    private final UserService service;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> repository.findByUsername(username)
-                .orElseThrow(() ->
-                        new NotFoundException("User not found"));
+        return service::getByUsername;
     }
 
     @Bean

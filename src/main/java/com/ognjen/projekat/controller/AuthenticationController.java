@@ -1,32 +1,36 @@
 package com.ognjen.projekat.controller;
 
 
-import com.ognjen.projekat.auth.AuthenticationRequest;
-import com.ognjen.projekat.auth.AuthenticationResponse;
-import com.ognjen.projekat.auth.AuthenticationService;
-import com.ognjen.projekat.auth.RegisterRequest;
+import com.ognjen.projekat.controller.dto.mapper.UserDtoMapper;
+import com.ognjen.projekat.controller.dto.request.LoginRequest;
+import com.ognjen.projekat.controller.dto.request.RegisterRequest;
+import com.ognjen.projekat.controller.dto.response.LoginResponse;
+import com.ognjen.projekat.controller.dto.response.UserResponse;
+import com.ognjen.projekat.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
+    private final UserDtoMapper mapper;
+
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
-        return ResponseEntity.ok(authenticationService.register(request));
+    public UserResponse register(@RequestBody RegisterRequest request){
+        return mapper.toResponse(authenticationService.register(mapper.toDomain(request)));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request){
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+
+    public LoginResponse login(@RequestBody LoginRequest request){
+        return mapper.toResponse(authenticationService.login(request));
     }
 
 }

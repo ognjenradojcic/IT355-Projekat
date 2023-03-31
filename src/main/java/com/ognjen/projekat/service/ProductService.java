@@ -16,8 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
 
-    private ProductMapper mapper;
-    private ProductRepository productRepository;
+    private final ProductMapper mapper;
+    private final ProductRepository productRepository;
 
     public List<Product> getAll() {
         return mapper.toDomainList(productRepository.findAll());
