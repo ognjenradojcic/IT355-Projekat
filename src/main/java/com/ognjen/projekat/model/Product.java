@@ -15,4 +15,6 @@ public class Product {
     private String manufacturer;
 
     private Double price;
+
+    private Category category;
 }

@@ -1,6 +1,6 @@
 CREATE TABLE user
 (
-    user_id    INT NOT NULL AUTO_INCREMENT,
+    user_id    INT AUTO_INCREMENT NOT NULL,
     username   VARCHAR(255) NULL,
     password   VARCHAR(255) NULL,
     first_name VARCHAR(255) NULL,

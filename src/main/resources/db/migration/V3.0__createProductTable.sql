@@ -1,10 +1,10 @@
 CREATE TABLE product
 (
-    product_id   INT          NOT NULL AUTO_INCREMENT,
-    name         VARCHAR(255) NULL,
-    manufacturer VARCHAR(255) NULL,
-    price        DOUBLE       NULL,
-    category_id  INT          NULL,
+    product_id   INT AUTO_INCREMENT NOT NULL,
+    name         VARCHAR(255)       NULL,
+    manufacturer VARCHAR(255)       NULL,
+    price        DOUBLE             NULL,
+    category_id  INT                NULL,
     CONSTRAINT pk_product PRIMARY KEY (product_id)
 );
 

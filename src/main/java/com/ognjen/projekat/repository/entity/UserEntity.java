@@ -4,7 +4,7 @@ import com.ognjen.projekat.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter
@@ -14,6 +14,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @Table(name = "user")
 public class UserEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -39,6 +40,6 @@ public class UserEntity {
     private Role role;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Collection<OrderEntity> orders;
+    private List<InvoiceEntity> invoices;
 
 }

@@ -3,8 +3,6 @@ package com.ognjen.projekat.repository.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Collection;
-
 @Entity
 @Getter
 @Setter
@@ -14,7 +12,7 @@ import java.util.Collection;
 @Table(name = "product")
 public class ProductEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Integer id;
 
@@ -26,9 +24,6 @@ public class ProductEntity {
 
     @Column(name = "price")
     private Double price;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
-    private Collection<OrderEntity> orders;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "category_id")

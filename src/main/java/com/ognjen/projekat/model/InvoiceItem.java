@@ -1,19 +1,18 @@
 package com.ognjen.projekat.model;
 
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @Builder
-public class Category {
+public class InvoiceItem {
 
     private Integer id;
 
-    private String name;
+    private Product product;
 
-    private List<Product> products;
+    private Integer quantity;
 }
