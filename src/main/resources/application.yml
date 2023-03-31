@@ -1,0 +1,11 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/it355_projekat
+    username: root
+    password: dusanr123
+    driver-class-name: com.mysql.cj.jdbc.Driver

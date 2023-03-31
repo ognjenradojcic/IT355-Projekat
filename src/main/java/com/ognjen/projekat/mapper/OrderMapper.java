@@ -5,10 +5,12 @@ import com.ognjen.projekat.model.Order;
 import com.ognjen.projekat.repository.entity.OrderEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Mapper
+@Service
 public interface OrderMapper {
 
     OrderEntity toEntity(Order order);

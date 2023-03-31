@@ -24,5 +24,5 @@ public class CategoryEntity {
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<ProductEntity> productEntities;
+    private List<ProductEntity> products;
 }

@@ -30,11 +30,11 @@ public class OrderEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "product_id")
-    private ProductEntity productEntity;
+    private ProductEntity product;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "customer_id")
-    private UserEntity userEntity;
+    private UserEntity user;
 
 
 }

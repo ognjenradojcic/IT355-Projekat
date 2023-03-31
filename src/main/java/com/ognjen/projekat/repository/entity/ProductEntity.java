@@ -28,10 +28,10 @@ public class ProductEntity {
     private Double price;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
-    private Collection<OrderEntity> orderEntities;
+    private Collection<OrderEntity> orders;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "category_id")
-    private CategoryEntity categoryEntity;
+    private CategoryEntity category;
 
 }

@@ -2,8 +2,8 @@ package com.ognjen.projekat.auth;
 
 import com.ognjen.projekat.config.JwtService;
 import com.ognjen.projekat.exception.NotFoundException;
+import com.ognjen.projekat.model.enums.Role;
 import com.ognjen.projekat.repository.UserRepository;
-import com.ognjen.projekat.repository.entity.Role;
 import com.ognjen.projekat.repository.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -5,10 +5,12 @@ import com.ognjen.projekat.model.Product;
 import com.ognjen.projekat.repository.entity.ProductEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Mapper
+@Service
 public interface ProductMapper {
 
     ProductEntity toEntity(Product product);

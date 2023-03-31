@@ -1,5 +1,6 @@
 package com.ognjen.projekat.repository.entity;
 
+import com.ognjen.projekat.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +19,7 @@ import java.util.List;
 @Table(name = "user")
 public class UserEntity implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Integer id;
 
@@ -40,8 +41,8 @@ public class UserEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-    private Collection<OrderEntity> orderEntities;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Collection<OrderEntity> orders;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
