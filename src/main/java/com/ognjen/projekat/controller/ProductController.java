@@ -3,6 +3,7 @@ package com.ognjen.projekat.controller;
 
 import com.ognjen.projekat.controller.dto.mapper.ProductDtoMapper;
 import com.ognjen.projekat.controller.dto.request.ProductRequest;
+import com.ognjen.projekat.controller.dto.request.ProductUpdateRequest;
 import com.ognjen.projekat.controller.dto.response.ProductResponse;
 import com.ognjen.projekat.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -41,4 +42,9 @@ public class ProductController {
     }
 
     // TODO: 31.3.2023. Add update functionality
+
+    @PutMapping("/{id}")
+    public void updateProduct(@PathVariable("id") Integer id, @RequestBody ProductUpdateRequest request){
+        productService.update(mapper.toDomain(request, id));
+    }
 }

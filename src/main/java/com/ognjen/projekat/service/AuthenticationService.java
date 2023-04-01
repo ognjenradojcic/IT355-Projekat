@@ -44,4 +44,8 @@ public class AuthenticationService {
             throw new LoginException("Username or password are incorrect");
         }
     }
+
+    public Tokens refreshTokens(String request) {
+        return tokenService.refreshTokens(request);
+    }
 }

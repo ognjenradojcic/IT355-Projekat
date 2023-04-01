@@ -3,6 +3,7 @@ package com.ognjen.projekat.controller;
 
 import com.ognjen.projekat.controller.dto.mapper.UserDtoMapper;
 import com.ognjen.projekat.controller.dto.request.LoginRequest;
+import com.ognjen.projekat.controller.dto.request.RefreshRequest;
 import com.ognjen.projekat.controller.dto.request.RegisterRequest;
 import com.ognjen.projekat.controller.dto.response.LoginResponse;
 import com.ognjen.projekat.controller.dto.response.UserResponse;
@@ -32,5 +33,11 @@ public class AuthenticationController {
     public LoginResponse login(@RequestBody LoginRequest request){
         return mapper.toResponse(authenticationService.login(request));
     }
+
+    @PostMapping("/refresh")
+    public LoginResponse refresh(@RequestBody RefreshRequest request){
+        return mapper.toResponse(authenticationService.refreshTokens(request.refreshToken()));
+    }
+
 
 }

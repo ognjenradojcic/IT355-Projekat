@@ -3,6 +3,7 @@ package com.ognjen.projekat.controller;
 
 import com.ognjen.projekat.controller.dto.mapper.CategoryDtoMapper;
 import com.ognjen.projekat.controller.dto.request.CategoryRequest;
+import com.ognjen.projekat.controller.dto.request.CategoryUpdateRequest;
 import com.ognjen.projekat.controller.dto.response.CategoryResponse;
 import com.ognjen.projekat.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +35,13 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable("id") Integer id){
+    public void deleteCategory(@PathVariable("id") Integer id){
         categoryService.delete(id);
     }
 
     // TODO: 31.3.2023. Add update functionality
+    @PutMapping("/{id}")
+    public void updateCategory(@PathVariable("id") Integer id, @RequestBody CategoryUpdateRequest request){
+        categoryService.update(mapper.toDomain(request, id));
+    }
 }

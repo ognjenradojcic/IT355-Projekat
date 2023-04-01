@@ -18,6 +18,7 @@ public class ProductService {
 
     private final ProductMapper mapper;
     private final ProductRepository productRepository;
+    private final CategoryService categoryService;
 
     public List<Product> getAll() {
         return mapper.toDomainList(productRepository.findAll());
@@ -42,6 +43,7 @@ public class ProductService {
 
     @Transactional
     public void update(Product updatedProduct) {
+        categoryService.getById(updatedProduct.getId());
 
         var existingProductEntity = getProductEntityById(updatedProduct.getId());
 
@@ -49,7 +51,8 @@ public class ProductService {
     }
 
     private ProductEntity getProductEntityById(Integer productId) {
-        return productRepository.findById(productId).orElseThrow(() ->
-                new NotFoundException("Product not found with id: " + productId));
+        return productRepository.findById(productId)
+                .orElseThrow(() ->
+                        new NotFoundException("Product not found with id: " + productId));
     }
 }
