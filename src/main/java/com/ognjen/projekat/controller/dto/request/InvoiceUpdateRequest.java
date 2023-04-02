@@ -3,7 +3,8 @@ package com.ognjen.projekat.controller.dto.request;
 import java.time.LocalDate;
 import java.util.List;
 
-public record InvoiceRequest(
+public record InvoiceUpdateRequest(
+        Integer id,
         String address,
         LocalDate orderedAt,
         Integer userId,
@@ -16,5 +17,4 @@ public record InvoiceRequest(
     }
 
 }
-
 

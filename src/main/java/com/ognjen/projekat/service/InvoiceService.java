@@ -18,6 +18,7 @@ public class InvoiceService {
 
     private final InvoiceMapper mapper;
     private final InvoiceRepository invoiceRepository;
+    private final UserService userService;
 
     public List<Invoice> getAll() {
         return mapper.toDomainList(invoiceRepository.findAll());
@@ -29,6 +30,7 @@ public class InvoiceService {
 
     @Transactional
     public Invoice create(Invoice invoice) {
+        invoice.setUser(userService.getById(invoice.getUser().getId()));
 
         var entity = mapper.toEntity(invoice);
 
@@ -38,14 +40,6 @@ public class InvoiceService {
     @Transactional
     public void delete(Integer orderId) {
         invoiceRepository.delete(getInvoiceEntityById(orderId));
-    }
-
-    @Transactional
-    public void update(Invoice updatedInvoice) {
-
-        var existingOrderEntity = getInvoiceEntityById(updatedInvoice.getId());
-
-        mapper.update(existingOrderEntity, updatedInvoice);
     }
 
     private InvoiceEntity getInvoiceEntityById(Integer invoiceId) {

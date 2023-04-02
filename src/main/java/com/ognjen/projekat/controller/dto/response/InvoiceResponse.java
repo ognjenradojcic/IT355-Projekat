@@ -7,7 +7,7 @@ public record InvoiceResponse(
         Integer id,
         String address,
         LocalDate orderedDate,
-        UserResponse user,
+        Integer userId,
         List<InvoiceItemResponse> items
 ) {
 
@@ -15,7 +15,8 @@ public record InvoiceResponse(
             Integer id,
             ProductResponse product,
             Integer quantity
-            ) {
+    ) {
 
     }
+
 }

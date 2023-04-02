@@ -20,17 +20,17 @@ public class UserController {
     private final UserDtoMapper mapper;
 
     @GetMapping
-    public List<UserResponse> getAllUsers() {
+    public List<UserResponse> getAll() {
         return mapper.toResponseList(userService.getAll());
     }
 
     @GetMapping("/{id}")
-    public UserResponse getUser(@PathVariable("id") Integer id) {
+    public UserResponse getById(@PathVariable("id") Integer id) {
         return mapper.toResponse(userService.getById(id));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable("id") Integer id) {
+    public void delete(@PathVariable("id") Integer id) {
         userService.delete(id);
     }
 

@@ -22,29 +22,29 @@ public class ProductController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public List<ProductResponse> getAllProduct() {
+    public List<ProductResponse> getAll() {
         return mapper.toResponseList(productService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ProductResponse getProduct(@PathVariable("id") Integer id) {
+    public ProductResponse getById(@PathVariable("id") Integer id) {
         return mapper.toResponse(productService.getById(id));
     }
 
     @PostMapping
-    public ProductResponse createProduct(@RequestBody ProductRequest request) {
+    public ProductResponse create(@RequestBody ProductRequest request) {
         return mapper.toResponse(productService.create(mapper.toDomain(request)));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable("id") Integer id){
+    public void delete(@PathVariable("id") Integer id){
         productService.delete(id);
     }
 
     // TODO: 31.3.2023. Add update functionality
 
     @PutMapping("/{id}")
-    public void updateProduct(@PathVariable("id") Integer id, @RequestBody ProductUpdateRequest request){
+    public void update(@PathVariable("id") Integer id, @RequestBody ProductUpdateRequest request){
         productService.update(mapper.toDomain(request, id));
     }
 }

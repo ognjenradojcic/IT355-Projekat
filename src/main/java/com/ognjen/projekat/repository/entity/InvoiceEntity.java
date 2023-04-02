@@ -2,6 +2,8 @@ package com.ognjen.projekat.repository.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "invoice")
 public class InvoiceEntity {
     @Id
@@ -23,6 +26,7 @@ public class InvoiceEntity {
     @Column(name = "address")
     private String address;
 
+    @CreatedDate
     @Column(name = "ordered_date")
     private LocalDate orderedAt;
 
@@ -31,6 +35,6 @@ public class InvoiceEntity {
     private UserEntity user;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "invoice_item_id", insertable = false, updatable = false, nullable = false)
+    @JoinColumn(name = "invoice_id", referencedColumnName = "invoice_id", nullable = false)
     private List<InvoicetemEntity> items;
 }

@@ -6,6 +6,7 @@ import com.ognjen.projekat.controller.dto.request.CategoryRequest;
 import com.ognjen.projekat.controller.dto.request.CategoryUpdateRequest;
 import com.ognjen.projekat.controller.dto.response.CategoryResponse;
 import com.ognjen.projekat.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,28 +21,28 @@ public class CategoryController {
     private final CategoryDtoMapper mapper;
 
     @GetMapping
-    public List<CategoryResponse> getAllCategories() {
+    public List<CategoryResponse> getAll() {
         return mapper.toResponseList(categoryService.getAll());
     }
 
     @GetMapping("/{id}")
-    public CategoryResponse getCategory(@PathVariable("id") Integer id) {
+    public CategoryResponse getById(@PathVariable("id") Integer id) {
         return mapper.toResponse(categoryService.getById(id));
     }
 
     @PostMapping
-    public CategoryResponse createCategory(@RequestBody CategoryRequest request) {
+    public CategoryResponse create(@RequestBody @Valid CategoryRequest request) {
         return mapper.toResponse(categoryService.create(mapper.toDomain(request)));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCategory(@PathVariable("id") Integer id){
+    public void delete(@PathVariable("id") Integer id){
         categoryService.delete(id);
     }
 
     // TODO: 31.3.2023. Add update functionality
     @PutMapping("/{id}")
-    public void updateCategory(@PathVariable("id") Integer id, @RequestBody CategoryUpdateRequest request){
+    public void update(@PathVariable("id") Integer id, @RequestBody CategoryUpdateRequest request){
         categoryService.update(mapper.toDomain(request, id));
     }
 }

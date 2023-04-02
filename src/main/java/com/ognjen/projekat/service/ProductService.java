@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,8 +29,13 @@ public class ProductService {
         return mapper.toDomain(getProductEntityById(productId));
     }
 
+    public List<Product> getAllById(Set<Integer> productsId) {
+        return mapper.toDomainList(productRepository.findByIdIn(productsId));
+    }
+
     @Transactional
     public Product create(Product product) {
+        product.setCategory(categoryService.getById(product.getCategory().getId()));
 
         var entity = mapper.toEntity(product);
 
@@ -43,7 +49,7 @@ public class ProductService {
 
     @Transactional
     public void update(Product updatedProduct) {
-        categoryService.getById(updatedProduct.getId());
+        updatedProduct.setCategory(categoryService.getById(updatedProduct.getCategory().getId()));
 
         var existingProductEntity = getProductEntityById(updatedProduct.getId());
 
