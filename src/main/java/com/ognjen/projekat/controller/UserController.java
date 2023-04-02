@@ -1,7 +1,9 @@
 package com.ognjen.projekat.controller;
 
 import com.ognjen.projekat.controller.dto.mapper.UserDtoMapper;
+import com.ognjen.projekat.controller.dto.request.RequestAccess;
 import com.ognjen.projekat.controller.dto.response.UserResponse;
+import com.ognjen.projekat.service.TokenService;
 import com.ognjen.projekat.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final TokenService tokenService;
     private final UserDtoMapper mapper;
 
     @GetMapping
@@ -31,5 +34,8 @@ public class UserController {
         userService.delete(id);
     }
 
-    // TODO: 31.3.2023. Add update functionality
+    @PostMapping
+    public UserResponse getUserInfo(@RequestBody RequestAccess request) {
+        return mapper.toResponse(tokenService.getUserWithToken(request.accessToken()));
+    }
 }

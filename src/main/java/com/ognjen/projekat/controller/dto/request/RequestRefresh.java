@@ -1,6 +1,6 @@
 package com.ognjen.projekat.controller.dto.request;
 
-public record RefreshRequest (
+public record RequestRefresh(
         String refreshToken
 ){
 }

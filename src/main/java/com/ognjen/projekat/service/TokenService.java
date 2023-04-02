@@ -1,6 +1,7 @@
 package com.ognjen.projekat.service;
 
 import com.ognjen.projekat.model.Tokens;
+import com.ognjen.projekat.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -75,6 +76,10 @@ public class TokenService {
                 .setExpiration(new Date(System.currentTimeMillis() + duration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public User getUserWithToken(String token){
+        return userService.getByUsername(extractUsername(token));
     }
 
     public boolean isTokenValid(String jwtToken, UserDetails userDetails) {
