@@ -5,6 +5,7 @@ import com.ognjen.projekat.controller.dto.request.RequestAccess;
 import com.ognjen.projekat.controller.dto.response.UserResponse;
 import com.ognjen.projekat.service.TokenService;
 import com.ognjen.projekat.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponse getUserInfo(@RequestBody RequestAccess request) {
+    public UserResponse getUserInfo(@Valid @RequestBody RequestAccess request) {
         return mapper.toResponse(tokenService.getUserWithToken(request.accessToken()));
     }
 }

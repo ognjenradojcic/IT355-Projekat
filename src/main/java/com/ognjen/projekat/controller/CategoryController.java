@@ -42,7 +42,7 @@ public class CategoryController {
 
     // TODO: 31.3.2023. Add update functionality
     @PutMapping("/{id}")
-    public void update(@PathVariable("id") Integer id, @RequestBody CategoryUpdateRequest request){
+    public void update(@PathVariable("id") Integer id, @RequestBody @Valid CategoryUpdateRequest request){
         categoryService.update(mapper.toDomain(request, id));
     }
 }

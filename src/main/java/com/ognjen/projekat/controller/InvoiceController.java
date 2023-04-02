@@ -4,6 +4,7 @@ import com.ognjen.projekat.controller.dto.mapper.InvoiceDtoMapper;
 import com.ognjen.projekat.controller.dto.request.InvoiceRequest;
 import com.ognjen.projekat.controller.dto.response.InvoiceResponse;
 import com.ognjen.projekat.service.InvoiceService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class InvoiceController {
     }
 
     @PostMapping
-    public InvoiceResponse create(@RequestBody InvoiceRequest request) {
+    public InvoiceResponse create(@RequestBody @Valid InvoiceRequest request) {
         return mapper.toResponse(invoiceService.create(mapper.toDomain(request)));
     }
 

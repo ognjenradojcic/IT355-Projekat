@@ -6,6 +6,7 @@ import com.ognjen.projekat.controller.dto.request.ProductRequest;
 import com.ognjen.projekat.controller.dto.request.ProductUpdateRequest;
 import com.ognjen.projekat.controller.dto.response.ProductResponse;
 import com.ognjen.projekat.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductResponse create(@RequestBody ProductRequest request) {
+    public ProductResponse create(@RequestBody @Valid ProductRequest request) {
         return mapper.toResponse(productService.create(mapper.toDomain(request)));
     }
 
@@ -44,7 +45,7 @@ public class ProductController {
     // TODO: 31.3.2023. Add update functionality
 
     @PutMapping("/{id}")
-    public void update(@PathVariable("id") Integer id, @RequestBody ProductUpdateRequest request){
+    public void update(@PathVariable("id") Integer id, @RequestBody @Valid ProductUpdateRequest request){
         productService.update(mapper.toDomain(request, id));
     }
 }
