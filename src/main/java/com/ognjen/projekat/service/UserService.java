@@ -2,6 +2,7 @@ package com.ognjen.projekat.service;
 
 
 import com.ognjen.projekat.exception.NotFoundException;
+import com.ognjen.projekat.exception.UsedAttributeException;
 import com.ognjen.projekat.mapper.UserMapper;
 import com.ognjen.projekat.model.User;
 import com.ognjen.projekat.repository.UserRepository;
@@ -38,6 +39,8 @@ public class UserService {
     @Transactional
     public User create(User user) {
 
+        userExistsCheck(user);
+
         var entity = mapper.toEntity(user);
 
         return mapper.toDomain(userRepository.save(entity));
@@ -51,6 +54,8 @@ public class UserService {
     @Transactional
     public void update(User updatedUser) {
 
+        userExistsCheck(updatedUser);
+
         var existingUserEntity = getUserEntityById(updatedUser.getId());
 
         mapper.update(existingUserEntity, updatedUser);
@@ -59,6 +64,12 @@ public class UserService {
     private UserEntity getUserEntityById(Integer customerId) {
         return userRepository.findById(customerId).orElseThrow(() ->
                 new NotFoundException("User not found with id: " + customerId));
+    }
+
+    private void userExistsCheck(User user) {
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new UsedAttributeException("User already exists with username: " + user.getUsername());
+        }
     }
 
 }

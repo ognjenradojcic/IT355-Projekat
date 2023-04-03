@@ -3,6 +3,7 @@ package com.ognjen.projekat.controller;
 
 import com.ognjen.projekat.controller.dto.response.ApiErrorResponse;
 import com.ognjen.projekat.exception.NotFoundException;
+import com.ognjen.projekat.exception.UsedAttributeException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,5 +30,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ApiErrorResponse methodArgumentNotValidException(MethodArgumentNotValidException e) {
         return new ApiErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(UsedAttributeException.class)
+    public ApiErrorResponse usedAttributeException(UsedAttributeException e) {
+        return new ApiErrorResponse(HttpStatus.CONFLICT, e.getMessage());
     }
 }

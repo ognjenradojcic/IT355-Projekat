@@ -1,6 +1,7 @@
 package com.ognjen.projekat.service;
 
 import com.ognjen.projekat.exception.NotFoundException;
+import com.ognjen.projekat.exception.UsedAttributeException;
 import com.ognjen.projekat.mapper.CategoryMapper;
 import com.ognjen.projekat.model.Category;
 import com.ognjen.projekat.repository.CategoryRepository;
@@ -31,6 +32,8 @@ public class CategoryService {
     @Transactional
     public Category create(Category category) {
 
+        categoryExistsCheck(category);
+
         var categoryEntity = mapper.toEntity(category);
 
         return mapper.toDomain(categoryRepository.save(categoryEntity));
@@ -38,6 +41,8 @@ public class CategoryService {
 
     @Transactional
     public void update(Category updatedCategory) {
+
+        categoryExistsCheck(updatedCategory);
 
         var existingCategoryEntity = getCategoryEntityById(updatedCategory.getId());
 
@@ -52,5 +57,11 @@ public class CategoryService {
     private CategoryEntity getCategoryEntityById(Integer categoryId) {
         return categoryRepository.findById(categoryId).orElseThrow(() ->
                 new NotFoundException("Category not found with id " + categoryId));
+    }
+
+    private void categoryExistsCheck(Category category) {
+        if (categoryRepository.existsByName(category.getName())) {
+            throw new UsedAttributeException("Category already exists with name: " + category.getName());
+        }
     }
 }
