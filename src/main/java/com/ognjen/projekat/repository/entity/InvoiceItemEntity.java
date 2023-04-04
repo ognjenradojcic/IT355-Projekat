@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "invoice_item")
-public class InvoicetemEntity {
+public class InvoiceItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

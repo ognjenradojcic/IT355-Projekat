@@ -39,7 +39,9 @@ public class InvoiceService {
 
     @Transactional
     public void delete(Integer orderId) {
-        invoiceRepository.delete(getInvoiceEntityById(orderId));
+        invoiceNotExistsByIdCheck(orderId);
+
+        invoiceRepository.deleteById(orderId);
     }
 
     private InvoiceEntity getInvoiceEntityById(Integer invoiceId) {
@@ -47,5 +49,10 @@ public class InvoiceService {
                 new NotFoundException("Invoice not found with id: " + invoiceId));
     }
 
+    private void invoiceNotExistsByIdCheck(Integer id) {
+        if (!invoiceRepository.existsById(id)) {
+            throw new NotFoundException("Invoice not found with id: " + id);
+        }
+    }
 
 }

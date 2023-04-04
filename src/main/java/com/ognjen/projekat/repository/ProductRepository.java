@@ -9,4 +9,6 @@ import java.util.Set;
 public interface ProductRepository extends JpaRepository<ProductEntity, Integer> {
 
     List<ProductEntity> findByIdIn(Set<Integer> productsId);
+
+    void deleteById(Integer id);
 }

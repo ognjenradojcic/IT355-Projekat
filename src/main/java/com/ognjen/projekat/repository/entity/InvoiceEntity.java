@@ -36,5 +36,5 @@ public class InvoiceEntity {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "invoice_id", referencedColumnName = "invoice_id", nullable = false)
-    private List<InvoicetemEntity> items;
+    private List<InvoiceItemEntity> items;
 }

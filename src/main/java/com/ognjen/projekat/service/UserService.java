@@ -25,8 +25,8 @@ public class UserService {
         return mapper.toDomainList(userRepository.findAll());
     }
 
-    public User getById(Integer customerId) {
-        return mapper.toDomain(getUserEntityById(customerId));
+    public User getById(Integer userId) {
+        return mapper.toDomain(getUserEntityById(userId));
     }
 
     public User getByUsername(String username) {
@@ -39,7 +39,7 @@ public class UserService {
     @Transactional
     public User create(User user) {
 
-        userExistsCheck(user);
+        userExistsByUsernameCheck(user);
 
         var entity = mapper.toEntity(user);
 
@@ -47,28 +47,36 @@ public class UserService {
     }
 
     @Transactional
-    public void delete(Integer customerId) {
-        userRepository.delete(getUserEntityById(customerId));
+    public void delete(Integer userId) {
+        userNotExistsByIdCheck(userId);
+
+        userRepository.deleteById(userId);
     }
 
     @Transactional
     public void update(User updatedUser) {
 
-        userExistsCheck(updatedUser);
+        userExistsByUsernameCheck(updatedUser);
 
         var existingUserEntity = getUserEntityById(updatedUser.getId());
 
         mapper.update(existingUserEntity, updatedUser);
     }
 
-    private UserEntity getUserEntityById(Integer customerId) {
-        return userRepository.findById(customerId).orElseThrow(() ->
-                new NotFoundException("User not found with id: " + customerId));
+    private UserEntity getUserEntityById(Integer userId) {
+        return userRepository.findById(userId).orElseThrow(() ->
+                new NotFoundException("User not found with id: " + userId));
     }
 
-    private void userExistsCheck(User user) {
+    private void userExistsByUsernameCheck(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new UsedAttributeException("User already exists with username: " + user.getUsername());
+        }
+    }
+
+    private void userNotExistsByIdCheck(Integer id) {
+        if (!userRepository.existsById(id)) {
+            throw new NotFoundException("User not found with id: " + id);
         }
     }
 
