@@ -51,6 +51,9 @@ public final class EntityBuilder {
     public static final Product PRODUCT = product();
     public static final Integer QUANTITY = 1;
 
+    //Token
+    public static final String ACCESS_TOKEN = "Access token test";
+    public static final String REFRESH_TOKEN = "Refresh token test";
 
     private EntityBuilder() {
     }
@@ -152,6 +155,10 @@ public final class EntityBuilder {
                 .product(PRODUCT)
                 .quantity(QUANTITY)
                 .build();
+    }
+
+    public static Tokens tokens() {
+        return new Tokens(ACCESS_TOKEN, REFRESH_TOKEN);
     }
 
 }

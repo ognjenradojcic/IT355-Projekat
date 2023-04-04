@@ -11,6 +11,7 @@ import com.ognjen.projekat.service.CategoryService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,6 +45,7 @@ public class CategoryController {
 
     @DeleteMapping("/{id}")
     @AdminAuthority
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") Integer id) {
         categoryService.delete(id);
     }
@@ -51,6 +53,7 @@ public class CategoryController {
 
     @PutMapping("/{id}")
     @AdminAuthority
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable("id") Integer id, @RequestBody @Valid CategoryUpdateRequest request) {
         categoryService.update(mapper.toDomain(request, id));
     }

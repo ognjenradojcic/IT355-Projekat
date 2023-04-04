@@ -56,7 +56,7 @@ public class UserService {
     @Transactional
     public void update(User updatedUser) {
 
-        userExistsByUsernameCheck(updatedUser);
+        userNotExistsByIdCheck(updatedUser.getId());
 
         var existingUserEntity = getUserEntityById(updatedUser.getId());
 

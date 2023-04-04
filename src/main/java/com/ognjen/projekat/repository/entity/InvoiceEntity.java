@@ -2,7 +2,6 @@ package com.ognjen.projekat.repository.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
@@ -26,7 +25,6 @@ public class InvoiceEntity {
     @Column(name = "address")
     private String address;
 
-    @CreatedDate
     @Column(name = "ordered_date")
     private LocalDate orderedAt;
 
@@ -37,4 +35,9 @@ public class InvoiceEntity {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "invoice_id", referencedColumnName = "invoice_id", nullable = false)
     private List<InvoiceItemEntity> items;
+
+    @PrePersist
+    private void onCreate() {
+        orderedAt = LocalDate.now();
+    }
 }

@@ -1,5 +1,6 @@
 package com.ognjen.projekat.controller;
 
+import com.ognjen.projekat.controller.annotation.AdminAuthority;
 import com.ognjen.projekat.controller.annotation.UserAuthority;
 import com.ognjen.projekat.controller.dto.mapper.InvoiceDtoMapper;
 import com.ognjen.projekat.controller.dto.request.InvoiceRequest;
@@ -8,6 +9,7 @@ import com.ognjen.projekat.service.InvoiceService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,15 +25,21 @@ public class InvoiceController {
 
 
     @GetMapping
-    @UserAuthority
+    @AdminAuthority
     public List<InvoiceResponse> getAll() {
         return mapper.toResponseList(invoiceService.getAll());
     }
 
+    @GetMapping("/users")
+    @UserAuthority
+    public List<InvoiceResponse> getAllForUser(@RequestHeader(name = "Authorization") String token) {
+        return mapper.toResponseList(invoiceService.getAllForUser(token));
+    }
+
     @GetMapping("/{id}")
     @UserAuthority
-    public InvoiceResponse getById(@PathVariable("id") Integer id) {
-        return mapper.toResponse(invoiceService.getById(id));
+    public InvoiceResponse getById(@PathVariable("id") Integer id, @RequestHeader(name = "Authorization") String token) {
+        return mapper.toResponse(invoiceService.getByIdAndUsername(id, token));
     }
 
     @PostMapping
@@ -42,7 +50,8 @@ public class InvoiceController {
 
     @DeleteMapping("/{id}")
     @UserAuthority
-    private void delete(@PathVariable("id") Integer id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") Integer id) {
         invoiceService.delete(id);
     }
 

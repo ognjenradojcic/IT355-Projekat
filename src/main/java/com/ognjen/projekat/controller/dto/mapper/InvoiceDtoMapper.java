@@ -8,12 +8,13 @@ import com.ognjen.projekat.model.InvoiceItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.time.LocalDate;
 import java.util.List;
 
-@Mapper(imports = {LocalDate.class})
+@Mapper
 public interface InvoiceDtoMapper {
 
+    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "orderedDate", source = "orderedAt")
     InvoiceResponse toResponse(Invoice invoice);
 
     List<InvoiceResponse> toResponseList(List<Invoice> invoiceList);

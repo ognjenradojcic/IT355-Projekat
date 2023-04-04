@@ -10,6 +10,7 @@ import com.ognjen.projekat.service.ProductService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,12 +44,14 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     @AdminAuthority
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") Integer id) {
         productService.delete(id);
     }
 
     @PutMapping("/{id}")
     @AdminAuthority
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable("id") Integer id, @RequestBody @Valid ProductUpdateRequest request) {
         productService.update(mapper.toDomain(request, id));
     }

@@ -3,7 +3,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
-
+      
   datasource:
     url: jdbc:mysql://localhost:3306/it355_projekat
     username: root

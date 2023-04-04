@@ -18,5 +18,10 @@ public interface UserMapper {
 
     List<User> toDomainList(List<UserEntity> userEntityList);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "username", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "role", ignore = true)
+    @Mapping(target = "invoices", ignore = true)
     void update(@MappingTarget UserEntity userEntity, User user);
 }
