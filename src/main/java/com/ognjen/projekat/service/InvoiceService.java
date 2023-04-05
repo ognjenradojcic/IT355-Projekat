@@ -1,10 +1,12 @@
 package com.ognjen.projekat.service;
 
+import com.ognjen.projekat.exception.AuthorizationFailedException;
 import com.ognjen.projekat.exception.NotFoundException;
 import com.ognjen.projekat.mapper.InvoiceMapper;
 import com.ognjen.projekat.model.Invoice;
 import com.ognjen.projekat.model.InvoiceItem;
 import com.ognjen.projekat.model.Product;
+import com.ognjen.projekat.model.User;
 import com.ognjen.projekat.repository.InvoiceRepository;
 import com.ognjen.projekat.repository.entity.InvoiceEntity;
 import lombok.RequiredArgsConstructor;
@@ -30,55 +32,60 @@ public class InvoiceService {
         return mapper.toDomainList(invoiceRepository.findAll());
     }
 
-    public List<Invoice> getAllForUser(String token) {
-        return mapper.toDomainList(getAllByUsername(token));
+    public List<Invoice> getAllForUser(User user) {
+        return mapper.toDomainList(getAllByUsername(user.getUsername()));
     }
 
-    public Invoice getById(Integer invoiceId) {
-        return mapper.toDomain(getInvoiceEntityById(invoiceId));
-    }
+    public Invoice getById(Integer invoiceId, Integer loggedUserId) {
 
-    public Invoice getByIdAndUsername(Integer invoiceId, String token) {
-        return mapper.toDomain(getInvoiceEntityByIdAndUsername(invoiceId, token));
+        InvoiceEntity invoiceEntity = getInvoiceEntityById(invoiceId);
+
+        authorizeById(invoiceEntity.getUser().getId(), loggedUserId);
+
+        return mapper.toDomain(invoiceEntity);
     }
 
     @Transactional
     public Invoice create(Invoice invoice) {
+
         invoice.setUser(userService.getById(invoice.getUser().getId()));
         invoice.setItems(addProductToInvoiceItems(invoice.getItems()));
 
         var entity = mapper.toEntity(invoice);
 
-        return mapper.toDomain(invoiceRepository.saveAndFlush(entity));
+        return mapper.toDomain(invoiceRepository.save(entity));
 
     }
 
     @Transactional
-    public void delete(Integer invoiceId) {
-        invoiceNotExistsByIdCheck(invoiceId);
+    public void delete(Integer invoiceId, Integer loggedUserId) {
+
+        InvoiceEntity invoiceEntity = getInvoiceEntityById(invoiceId);
+
+        authorizeById(invoiceEntity.getUser().getId(), loggedUserId);
 
         invoiceRepository.deleteById(invoiceId);
     }
+
 
     private InvoiceEntity getInvoiceEntityById(Integer invoiceId) {
         return invoiceRepository.findById(invoiceId).orElseThrow(() ->
                 new NotFoundException("Invoice not found with id: " + invoiceId));
     }
 
-    private InvoiceEntity getInvoiceEntityByIdAndUsername(Integer invoiceId, String token) {
-        String username = tokenService.extractUsername(token.substring(7));
-        return invoiceRepository.findByIdAndUserUsername(invoiceId, username).orElseThrow(() ->
-                new NotFoundException("Invoice not found with id: " + invoiceId + ", for username: " + username));
-    }
-
-    private List<InvoiceEntity> getAllByUsername(String token) {
-        String username = tokenService.extractUsername(token.substring(7));
+    private List<InvoiceEntity> getAllByUsername(String username) {
         return invoiceRepository.findAllByUserUsername(username);
     }
 
     private void invoiceNotExistsByIdCheck(Integer id) {
         if (!invoiceRepository.existsById(id)) {
             throw new NotFoundException("Invoice not found with id: " + id);
+        }
+    }
+
+    private static void authorizeById(Integer userId, Integer loggedUserId) {
+        if (!loggedUserId.equals(userId)) {
+            throw new AuthorizationFailedException("Authorization has failed");
         }
     }
 

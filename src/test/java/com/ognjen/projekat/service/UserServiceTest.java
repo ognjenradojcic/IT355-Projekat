@@ -109,7 +109,7 @@ class UserServiceTest {
     @Test
     void delete() {
         when(userRepository.existsById(USER_ID)).thenReturn(true);
-        userService.delete(USER_ID);
+        userService.delete(USER_ID, USER_ID);
         verify(userRepository).deleteById(USER_ID);
     }
 
@@ -117,7 +117,7 @@ class UserServiceTest {
     void deleteException() {
         doThrow(NotFoundException.class).when(userRepository).existsById(USER_ID);
 
-        assertThrows(NotFoundException.class, () -> userService.delete(USER_ID));
+        assertThrows(NotFoundException.class, () -> userService.delete(USER_ID, USER_ID));
     }
 
     @Test

@@ -10,13 +10,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 
-import static com.ognjen.projekat.EntityBuilder.user;
+import static com.ognjen.projekat.EntityBuilder.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -57,7 +58,8 @@ class UserControllerTest {
 
     @Test
     void delete() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/v1/users/{id}", 1))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/v1/users/{id}", 1)
+                        .with(SecurityMockMvcRequestPostProcessors.user(USERNAME).roles(ROLE.name())))
                 .andExpect(status().isNoContent());
     }
 
@@ -77,6 +79,7 @@ class UserControllerTest {
     void update() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders
                 .put("/v1/users/{id}", 1)
+                .with(SecurityMockMvcRequestPostProcessors.user(USERNAME).roles(ROLE.name()))
                 .accept(MediaType.APPLICATION_JSON)
                 .content("{\"firstName\":\"Ognjen\", \"lastName\":\"Radojcic\", \"phone\":\"065123123\"}")
                 .contentType(MediaType.APPLICATION_JSON);

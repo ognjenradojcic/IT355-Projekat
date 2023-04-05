@@ -2,6 +2,7 @@ package com.ognjen.projekat.controller;
 
 
 import com.ognjen.projekat.controller.dto.response.ApiErrorResponse;
+import com.ognjen.projekat.exception.AuthorizationFailedException;
 import com.ognjen.projekat.exception.LoginException;
 import com.ognjen.projekat.exception.NotFoundException;
 import com.ognjen.projekat.exception.UsedAttributeException;
@@ -42,6 +43,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(LoginException.class)
     public ApiErrorResponse loginException(LoginException e) {
+        return new ApiErrorResponse(HttpStatus.UNAUTHORIZED, e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(AuthorizationFailedException.class)
+    public ApiErrorResponse authorizationFailedException(AuthorizationFailedException e) {
         return new ApiErrorResponse(HttpStatus.UNAUTHORIZED, e.getMessage());
     }
 }

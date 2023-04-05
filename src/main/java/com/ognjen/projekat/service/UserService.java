@@ -1,6 +1,7 @@
 package com.ognjen.projekat.service;
 
 
+import com.ognjen.projekat.exception.AuthorizationFailedException;
 import com.ognjen.projekat.exception.NotFoundException;
 import com.ognjen.projekat.exception.UsedAttributeException;
 import com.ognjen.projekat.mapper.UserMapper;
@@ -47,16 +48,21 @@ public class UserService {
     }
 
     @Transactional
-    public void delete(Integer userId) {
+    public void delete(Integer userId, Integer loggedUserId) {
         userNotExistsByIdCheck(userId);
+
+        authorizeUserById(userId, loggedUserId);
 
         userRepository.deleteById(userId);
     }
 
+
     @Transactional
-    public void update(User updatedUser) {
+    public void update(User updatedUser, Integer loggedUserId) {
 
         userNotExistsByIdCheck(updatedUser.getId());
+
+        authorizeUserById(updatedUser.getId(), loggedUserId);
 
         var existingUserEntity = getUserEntityById(updatedUser.getId());
 
@@ -80,4 +86,9 @@ public class UserService {
         }
     }
 
+    private static void authorizeUserById(Integer userId, Integer loggedUserId) {
+        if (!loggedUserId.equals(userId)) {
+            throw new AuthorizationFailedException("Authorization has failed");
+        }
+    }
 }
