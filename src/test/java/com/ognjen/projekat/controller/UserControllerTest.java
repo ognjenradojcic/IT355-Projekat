@@ -1,6 +1,9 @@
 package com.ognjen.projekat.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ognjen.projekat.SecurityAwareTest;
 import com.ognjen.projekat.controller.dto.mapper.UserDtoMapper;
+import com.ognjen.projekat.controller.dto.request.UpdateUserRequest;
 import com.ognjen.projekat.service.TokenService;
 import com.ognjen.projekat.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -10,14 +13,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 
-import static com.ognjen.projekat.EntityBuilder.*;
+import static com.ognjen.projekat.EntityBuilder.user;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 @Import(UserController.class)
 @WebMvcTest(UserController.class)
-class UserControllerTest {
+class UserControllerTest extends SecurityAwareTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -39,6 +41,9 @@ class UserControllerTest {
 
     @MockBean
     UserDtoMapper mapper;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     void getAll() throws Exception {
@@ -58,8 +63,7 @@ class UserControllerTest {
 
     @Test
     void delete() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/v1/users/{id}", 1)
-                        .with(SecurityMockMvcRequestPostProcessors.user(USERNAME).roles(ROLE.name())))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/v1/users/{id}", 1))
                 .andExpect(status().isNoContent());
     }
 
@@ -68,7 +72,11 @@ class UserControllerTest {
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/v1/users")
                 .accept(MediaType.APPLICATION_JSON)
-                .content("{\"accessToken\":\"TokenTest\"}")
+                .content("""
+                        {
+                        "accessToken":"TokenTest"
+                        }
+                        """)
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(request)
@@ -77,11 +85,13 @@ class UserControllerTest {
 
     @Test
     void update() throws Exception {
+
+        var updateUserRequest = new UpdateUserRequest(1, "Ognjen", "Radojcic", "065123123");
+
         RequestBuilder request = MockMvcRequestBuilders
                 .put("/v1/users/{id}", 1)
-                .with(SecurityMockMvcRequestPostProcessors.user(USERNAME).roles(ROLE.name()))
                 .accept(MediaType.APPLICATION_JSON)
-                .content("{\"firstName\":\"Ognjen\", \"lastName\":\"Radojcic\", \"phone\":\"065123123\"}")
+                .content(objectMapper.writeValueAsString(updateUserRequest))
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(request)

@@ -32,7 +32,7 @@ public class CategoryService {
     @Transactional
     public Category create(Category category) {
 
-        categoryExistsByUsernameCheck(category);
+        validateNameIsFree(category);
 
         var categoryEntity = mapper.toEntity(category);
 
@@ -42,7 +42,7 @@ public class CategoryService {
     @Transactional
     public void update(Category updatedCategory) {
 
-        categoryExistsByUsernameCheck(updatedCategory);
+        validateNameIsFree(updatedCategory);
 
         var existingCategoryEntity = getCategoryEntityById(updatedCategory.getId());
 
@@ -51,7 +51,8 @@ public class CategoryService {
 
     @Transactional
     public void delete(Integer categoryId) {
-        categoryNotExistsByIdCheck(categoryId);
+
+        validateCategoryExists(categoryId);
 
         categoryRepository.deleteById(categoryId);
     }
@@ -61,13 +62,13 @@ public class CategoryService {
                 new NotFoundException("Category not found with id " + categoryId));
     }
 
-    private void categoryExistsByUsernameCheck(Category category) {
+    private void validateNameIsFree(Category category) {
         if (categoryRepository.existsByName(category.getName())) {
             throw new UsedAttributeException("Category already exists with name: " + category.getName());
         }
     }
 
-    private void categoryNotExistsByIdCheck(Integer id) {
+    private void validateCategoryExists(Integer id) {
         if (!categoryRepository.existsById(id)) {
             throw new NotFoundException("Category not found with id: " + id);
         }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,6 +31,7 @@ public class ProductService {
 
     @Transactional
     public Product create(Product product) {
+
         product.setCategory(categoryService.getById(product.getCategory().getId()));
 
         var entity = mapper.toEntity(product);
@@ -39,13 +41,15 @@ public class ProductService {
 
     @Transactional
     public void delete(Integer productId) {
-        productNotExistsByIdCheck(productId);
+
+        validateProductExists(productId);
 
         productRepository.deleteById(productId);
     }
 
     @Transactional
     public void update(Product updatedProduct) {
+
         updatedProduct.setCategory(categoryService.getById(updatedProduct.getCategory().getId()));
 
         var existingProductEntity = getProductEntityById(updatedProduct.getId());
@@ -59,10 +63,13 @@ public class ProductService {
                         new NotFoundException("Product not found with id: " + productId));
     }
 
-    private void productNotExistsByIdCheck(Integer id) {
+    private void validateProductExists(Integer id) {
         if (!productRepository.existsById(id)) {
             throw new NotFoundException("Product not found with id: " + id);
         }
     }
 
+    public List<Product> getAllByIdsIn(Set<Integer> productIds) {
+        return mapper.toDomainList(productRepository.findByIdIn(productIds));
+    }
 }

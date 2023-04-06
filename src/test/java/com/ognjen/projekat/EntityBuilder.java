@@ -55,9 +55,6 @@ public final class EntityBuilder {
     public static final String ACCESS_TOKEN = "Access token test";
     public static final String REFRESH_TOKEN = "Refresh token test";
 
-    private EntityBuilder() {
-    }
-
     public static UserEntity userEntity() {
         return UserEntity.builder()
                 .id(USER_ID)
@@ -161,4 +158,6 @@ public final class EntityBuilder {
         return new Tokens(ACCESS_TOKEN, REFRESH_TOKEN);
     }
 
+    private EntityBuilder() {
+    }
 }

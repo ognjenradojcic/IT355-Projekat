@@ -2,14 +2,11 @@ package com.ognjen.projekat.controller;
 
 import com.ognjen.projekat.controller.annotation.AdminAuthority;
 import com.ognjen.projekat.controller.dto.mapper.UserDtoMapper;
-import com.ognjen.projekat.controller.dto.request.RequestAccess;
 import com.ognjen.projekat.controller.dto.request.UpdateUserRequest;
 import com.ognjen.projekat.controller.dto.response.UserResponse;
 import com.ognjen.projekat.model.User;
-import com.ognjen.projekat.service.TokenService;
 import com.ognjen.projekat.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,7 +21,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final TokenService tokenService;
     private final UserDtoMapper mapper;
 
     @GetMapping
@@ -45,9 +41,9 @@ public class UserController {
         userService.delete(id, user.getId());
     }
 
-    @PostMapping
-    public UserResponse getUserInfo(@Valid @RequestBody RequestAccess request) {
-        return mapper.toResponse(tokenService.getUserWithToken(request.accessToken()));
+    @GetMapping("/profile")
+    public UserResponse getUserInfo(@AuthenticationPrincipal User user) {
+        return mapper.toResponse(userService.getById(user.getId()));
     }
 
     @PutMapping("/{id}")

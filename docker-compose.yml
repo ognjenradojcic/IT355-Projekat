@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    image: it355/projekat
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=ognjen123
+      - MYSQL_URL=jdbc:mysql://database:3306/it355_projekat
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+
+  database:
+    image: mysql:8.0.32
+    restart: always
+    environment:
+      - MYSQL_HOST=localhost
+      - MYSQL_DATABASE=it355_projekat
+      - MYSQL_ROOT_PASSWORD=ognjen123
+    ports:
+      - '3306:3306'
+    volumes:
+      - db-volume:/var/lib/mysql
+volumes:
+  db-volume:
+    driver: local

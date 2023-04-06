@@ -40,7 +40,7 @@ public class UserService {
     @Transactional
     public User create(User user) {
 
-        userExistsByUsernameCheck(user);
+        validateUsernameIsFree(user.getUsername());
 
         var entity = mapper.toEntity(user);
 
@@ -49,7 +49,7 @@ public class UserService {
 
     @Transactional
     public void delete(Integer userId, Integer loggedUserId) {
-        userNotExistsByIdCheck(userId);
+        validateUserExists(userId);
 
         authorizeUserById(userId, loggedUserId);
 
@@ -60,7 +60,7 @@ public class UserService {
     @Transactional
     public void update(User updatedUser, Integer loggedUserId) {
 
-        userNotExistsByIdCheck(updatedUser.getId());
+        validateUserExists(updatedUser.getId());
 
         authorizeUserById(updatedUser.getId(), loggedUserId);
 
@@ -74,13 +74,13 @@ public class UserService {
                 new NotFoundException("User not found with id: " + userId));
     }
 
-    private void userExistsByUsernameCheck(User user) {
-        if (userRepository.existsByUsername(user.getUsername())) {
-            throw new UsedAttributeException("User already exists with username: " + user.getUsername());
+    private void validateUsernameIsFree(String username) {
+        if (userRepository.existsByUsername(username)) {
+            throw new UsedAttributeException("User already exists with username: " + username);
         }
     }
 
-    private void userNotExistsByIdCheck(Integer id) {
+    private void validateUserExists(Integer id) {
         if (!userRepository.existsById(id)) {
             throw new NotFoundException("User not found with id: " + id);
         }

@@ -13,10 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.ognjen.projekat.EntityBuilder.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -74,7 +71,7 @@ class InvoiceServiceTest {
 
         when(userService.getById(invoice().getUser().getId())).thenReturn(invoice().getUser());
         when(invoiceRepository.save(any(InvoiceEntity.class))).thenReturn(invoiceEntity());
-        when(productService.getAll()).thenReturn(products);
+        when(productService.getAllByIdsIn(any(Set.class))).thenReturn(products);
 
         Invoice invoice = invoiceService.create(invoice());
 

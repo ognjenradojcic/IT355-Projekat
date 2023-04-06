@@ -6,7 +6,6 @@ import com.ognjen.projekat.model.Tokens;
 import com.ognjen.projekat.model.User;
 import com.ognjen.projekat.model.enums.Role;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +17,6 @@ public class AuthenticationService {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
-    private final AuthenticationManager authenticationManager;
 
     @Transactional
     public User register(User user) {
@@ -31,7 +29,7 @@ public class AuthenticationService {
 
     public Tokens login(LoginRequest request) {
 
-        var user = userService.getByUsername(request.password());
+        var user = userService.getByUsername(request.username());
 
         validatePassword(request, user);
 
@@ -40,7 +38,7 @@ public class AuthenticationService {
     }
 
     private void validatePassword(LoginRequest request, User user) {
-        if (passwordEncoder.matches(user.getPassword(), request.password())) {
+        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new LoginException("Username or password are incorrect");
         }
     }

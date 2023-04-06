@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 @Builder
 public class User implements UserDetails {
+
     private Integer id;
 
     private String username;

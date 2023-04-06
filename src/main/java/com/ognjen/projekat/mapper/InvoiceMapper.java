@@ -19,11 +19,9 @@ public interface InvoiceMapper {
     @Mapping(target = "items.product", qualifiedByName = "noCategory")
     Invoice toDomain(InvoiceEntity invoiceEntity);
 
-
     List<Invoice> toDomainList(List<InvoiceEntity> invoiceEntityList);
 
     void update(@MappingTarget InvoiceEntity invoiceEntity, Invoice invoice);
-
 
     @Named(value = "noUser")
     @Mapping(target = "user", ignore = true)

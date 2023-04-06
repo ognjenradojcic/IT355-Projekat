@@ -38,7 +38,7 @@ class CategoryServiceTest {
 
 
     @Test
-    void getAll() {
+    void givenGetAll_WhenCategoriesExist_ThenReturnListOfCategories() {
 
         List<CategoryEntity> categoryEntities = Collections.singletonList(categoryEntity());
 
@@ -47,11 +47,10 @@ class CategoryServiceTest {
         List<Category> categories = categoryService.getAll();
 
         assertEquals(CATEGORY_ID, categories.get(0).getId());
-
     }
 
     @Test
-    void getById() {
+    void  givenCategoryId_WhenExists_ThenReturnCategory() {
 
         when(categoryRepository.findById(1)).thenReturn(
                 Optional.of(categoryEntity()));
@@ -59,16 +58,14 @@ class CategoryServiceTest {
         Category category = categoryService.getById(1);
 
         assertEquals(CATEGORY_ID, category.getId());
-
     }
 
     @Test
-    void getByIdException() {
+    void givenCategoryId_WhenNotExists_ThenTrowException() {
 
         when(categoryRepository.findById(10)).thenThrow(NotFoundException.class);
 
         assertThrows(NotFoundException.class, () -> categoryService.getById(10));
-
     }
 
     @Test
@@ -79,7 +76,6 @@ class CategoryServiceTest {
         Category category = categoryService.create(category());
 
         assertEquals(CATEGORY_ID, category.getId());
-
     }
 
     @Test

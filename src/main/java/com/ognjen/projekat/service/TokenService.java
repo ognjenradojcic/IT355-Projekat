@@ -1,7 +1,6 @@
 package com.ognjen.projekat.service;
 
 import com.ognjen.projekat.model.Tokens;
-import com.ognjen.projekat.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,8 +21,8 @@ public class TokenService {
     private static final String SECRET_KEY = "472D4B6150645367566B5970337336763979244226452948404D625165546857";
     private static final Integer ACCESS_TOKEN_DURATION = 1000 * 60 * 10;
     private static final Integer REFRESH_TOKEN_DURATION = 1000 * 60 * 60 * 24;
-    private final UserService userService;
 
+    private final UserService userService;
 
     public String extractUsername(String jwtToken) {
         return extractClaim(jwtToken, Claims::getSubject);
@@ -52,7 +51,7 @@ public class TokenService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public Tokens refreshTokens(String refreshToken){
+    public Tokens refreshTokens(String refreshToken) {
 
         var user = userService.getByUsername(extractUsername(refreshToken));
 
@@ -76,10 +75,6 @@ public class TokenService {
                 .setExpiration(new Date(System.currentTimeMillis() + duration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
-    }
-
-    public User getUserWithToken(String token){
-        return userService.getByUsername(extractUsername(token));
     }
 
     public boolean isTokenValid(String jwtToken, UserDetails userDetails) {

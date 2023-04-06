@@ -17,6 +17,7 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "invoice")
 public class InvoiceEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "invoice_id")

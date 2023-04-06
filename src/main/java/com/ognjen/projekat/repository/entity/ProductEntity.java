@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "product")
 public class ProductEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")

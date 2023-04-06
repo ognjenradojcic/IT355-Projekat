@@ -13,9 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,7 +27,6 @@ public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
     private final UserService userService;
     private final ProductService productService;
-    private final TokenService tokenService;
 
     public List<Invoice> getAll() {
         return mapper.toDomainList(invoiceRepository.findAll());
@@ -77,12 +77,6 @@ public class InvoiceService {
         return invoiceRepository.findAllByUserUsername(username);
     }
 
-    private void invoiceNotExistsByIdCheck(Integer id) {
-        if (!invoiceRepository.existsById(id)) {
-            throw new NotFoundException("Invoice not found with id: " + id);
-        }
-    }
-
     private static void authorizeById(Integer userId, Integer loggedUserId) {
         if (!loggedUserId.equals(userId)) {
             throw new AuthorizationFailedException("Authorization has failed");
@@ -91,23 +85,29 @@ public class InvoiceService {
 
     // TODO: 5.4.2023. Proveriti da li postoji drugi nacin
     private List<InvoiceItem> addProductToInvoiceItems(List<InvoiceItem> invoiceItems) {
-        List<Product> products = productService.getAll();
-        Map<Integer, Product> productMap = new HashMap<>();
-        for (Product product : products) {
-            productMap.put(product.getId(), product);
-        }
+
+        var productIds = invoiceItems.stream()
+                .map(InvoiceItem::getProduct)
+                .map(Product::getId)
+                .collect(Collectors.toSet());
+
+        var products = productService.getAllByIdsIn(productIds);
+
+        Map<Integer, Product> productPerId = products.stream()
+                .collect(Collectors.toMap(Product::getId, Function.identity()));
 
         for (InvoiceItem invoiceItem : invoiceItems) {
-            Integer productId = invoiceItem.getProduct().getId();
-            Product product = productMap.get(productId);
+
+            var productId = invoiceItem.getProduct().getId();
+            var product = productPerId.get(productId);
+
             if (product == null) {
                 throw new NotFoundException("Product not found for id: " + productId);
             } else {
                 invoiceItem.setProduct(product);
             }
         }
+
         return invoiceItems;
     }
-
-
 }
