@@ -30,7 +30,7 @@ Service is secured using JWT authentication.
 | -------|-----|------------ |-----------------|
 | GET | /api/v1/users | Get all users | / |
 | GET | /api/v1/users/{id} | Get user by ID| / |
-| PUT | /api/v1/users/{id} | Update user | [JSON](#updateUser) |
+| PUT | /api/v1/users/{id} | Update user | [JSON](#user_request) |
 | DELETE | /api/v1/users/{id} | Delete user by ID | / |
 | GET | /api/v1/users/profile | Get user data | / |
 
@@ -40,8 +40,8 @@ Service is secured using JWT authentication.
 | -------|-----|------------ |-----------------|
 | GET | /api/v1/products  | Get all products| / |
 | GET | /api/v1/products/{id} | Get product by ID| / |
-| POST | /api/v1/products  | Create a new product | [JSON](#productRequest) |
-| PUT | /api/v1/products/{id} | Update product | [JSON](#productRequest)|
+| POST | /api/v1/products  | Create a new product | [JSON](#product_request) |
+| PUT | /api/v1/products/{id} | Update product | [JSON](#product_request)|
 | DELETE | /api/v1/products/{id} | Delete product by id | / |
 
 ### Categories
@@ -50,8 +50,8 @@ Service is secured using JWT authentication.
 | -------|-----|------------ |-----------------|
 | GET | /api/v1/categories  | Get all categories | / |
 | GET | /api/v1/categories/{id} | Get category by ID| / |
-| POST | /api/v1/categories | Create a new category | [JSON](#categoryRequest) |
-| PUT | /api/v1/categories/{id} | Update category | [JSON](#categoryRequest)|
+| POST | /api/v1/categories | Create a new category | [JSON](#category_request) |
+| PUT | /api/v1/categories/{id} | Update category | [JSON](#category_request)|
 | DELETE | /api/v1/categories/{id} | Delete category by id | / |
 
 
@@ -61,7 +61,7 @@ Service is secured using JWT authentication.
 | -------|-----|------------ |-----------------|
 | GET | /api/v1/invoices  | Get all invoices | / |
 | GET | /api/v1/invoices/{id} | Get invoice by ID| / |
-| POST | /api/v1/invoices  | Create a new invoice| [JSON](#invoiceRequest) |
+| POST | /api/v1/invoices  | Create a new invoice| [JSON](#invoice_request) |
 | DELETE | /api/v1/invoices/{id} | Delete invoice by id| / |
 | GET | /api/v1/invoices/users | Get user's invoices | / |
 
@@ -98,9 +98,9 @@ Service is secured using JWT authentication.
 }
 ```
 
-### Users
+### <div id="user_request">Users</div>
 
-##### <a id="updateUser">Update user -> /api/v1/users/{id}</a>
+Update -> /api/v1/users/{id}
 
 ```json
 {
@@ -110,9 +110,9 @@ Service is secured using JWT authentication.
 }
 ```
 
-### Products
+### <div id="product_request">Products</div>
 
-##### <a id="productRequest">Create -> /api/v1/products | Update the product -> /api/v1/products/{id} </a>
+Create -> /api/v1/products <br/>Update -> /api/v1/products/{id}
 
 ```json
 {
@@ -123,9 +123,9 @@ Service is secured using JWT authentication.
 }
 ```
 
-### Categories
+### <div id="category_request">Categories</div>
 
-##### <a id="categoryRequest">Create -> /api/v1/categories | Update the category -> /api/v1/categories/{id} </a>
+Create -> /api/v1/categories <br/>Update -> /api/v1/categories/{id}
 
 ```json
 {
@@ -133,9 +133,9 @@ Service is secured using JWT authentication.
 }
 ```
 
-### Invoices
+### <div id="invoice_request">Invoices</div>
 
-##### <a id="invoiceRequest">Create invoice -> /api/v1/invoices </a>
+Create -> /api/v1/invoices
 
 ```json
 {
